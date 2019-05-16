@@ -46,6 +46,8 @@ ADC_HandleTypeDef hadc1;
 
 UART_HandleTypeDef huart2;
 
+uint64_t counter; // 64 bit should be enough
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */

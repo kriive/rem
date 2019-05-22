@@ -106,9 +106,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	//StampaInteroSuLCD(0, 0, counter);
+	StampaInteroSuLCD(0, 0, counter);
     /* USER CODE BEGIN 3 */
-	//HAL_Delay(1000);
+	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -279,7 +279,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : ImpulseInput_Pin */
   GPIO_InitStruct.Pin = ImpulseInput_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN; // Change this! This was NOPULL
   HAL_GPIO_Init(ImpulseInput_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ChangeUnit_Pin */

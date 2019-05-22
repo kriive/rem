@@ -20,10 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "math.h"
+#include "assert.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,7 +64,13 @@ static void MX_ADC1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int getDigits(uint32_t data)
+{
+	return (int) floor(log10(data)) + 1;	// floor arrotonda per difetto
+											// int tra parentesi è un cast
+											// serve a dire al compilatore di trattare il valore come intero
+											// e non come double (floor ritorna un double)
+}
 /* USER CODE END 0 */
 
 /**
@@ -107,9 +113,34 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	StampaInteroSuLCD(0, 0, counter);
+	PulisciSchermo();
+	uint64_t dataToPrint = 0;
+
+	/*
+	 * Prima scriviamo la stringa legata all'unità di misura
+	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
+	 */
+
+	switch(unitMeasure) {
+	case UNIT_CPM:
+		dataToPrint = counter;
+		StampaStringaSuLCD(0, getDigits(dataToPrint) + 1, "CPM");
+		break;
+	case UNIT_uSH:
+		dataToPrint = counter / 60;
+		StampaStringaSuLCD(0, getDigits(dataToPrint) + 1, "uS/h");
+		break;
+	default:
+		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,
+													//	quando la variabile è fuori dai valori giusti
+													//	il debugger impazzisce
+		break;
+	}
+
+	StampaInteroSuLCD(0, 0, dataToPrint);
+
     /* USER CODE BEGIN 3 */
-	HAL_Delay(1000);
+	HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }

@@ -9,7 +9,7 @@
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	switch(GPIO_PIN) {
+	switch(GPIO_Pin) {
 	case GEIGERIN: // Interrupt geiger input source pin
 		counter++;
 		break;

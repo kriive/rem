@@ -33,3 +33,4 @@
 *.su
 
 .settings/*
+/Debug/

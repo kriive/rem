@@ -60,6 +60,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
+//void DrawFirstRow(uint64_t*);
+void DrawSecondRow(uint64_t*);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -110,7 +112,6 @@ int main(void)
   init_LCD();
   /* USER CODE END 2 */
   uint64_t secondsSinceStartup = 1;
-  double dataToPrint = 0;
 
   HAL_ADC_Start_IT(&hadc1);
 
@@ -130,13 +131,25 @@ int main(void)
 		secondsSinceStartup = 1;
 	}
 
+	DrawSecondRow(&secondsSinceStartup);
+
+    /* USER CODE BEGIN 3 */
+	HAL_Delay(200);		// TODO: Find correct time
+  }
+  /* USER CODE END 3 */
+}
+
+void DrawSecondRow(uint64_t* secondsSinceStartup)
+{
+	double dataToPrint = 0;
+
 	switch(unitMeasure) {
 	case UNIT_CPM:
-		dataToPrint = ((double) counter / (double) secondsSinceStartup) * 60;
+		dataToPrint = ((double) counter / (double) *secondsSinceStartup) * 60;
 		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
 		break;
 	case UNIT_nSH:
-		dataToPrint = ((double) (counter) / 59) / ((double) secondsSinceStartup) * 3600;		// Use nS
+		dataToPrint = ((double) (counter) / 59) / ((double) *secondsSinceStartup) * 3600;		// Use nS
 		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "uS/h");
 		break;
 	default:
@@ -147,11 +160,6 @@ int main(void)
 	}
 	StampaInteroSuLCD(0, 0, potentiometerValue);
 	StampaInteroSuLCD(ROW_INIFITE_COUNTER, 0, dataToPrint);
-
-    /* USER CODE BEGIN 3 */
-	HAL_Delay(200);		// TODO: Find correct time
-  }
-  /* USER CODE END 3 */
 }
 
 /**

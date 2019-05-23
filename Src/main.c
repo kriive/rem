@@ -110,20 +110,20 @@ int main(void)
   init_LCD();
   /* USER CODE END 2 */
   uint64_t secondsSinceStartup = 1;
+  double dataToPrint = 0;
 
   HAL_ADC_Start_IT(&hadc1);
+
   /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 	PulisciSchermo();
-	double dataToPrint = 0;
 
 	/*
 	 * Prima scriviamo la stringa legata all'unità di misura
 	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
 	 */
+
 	secondsSinceStartup = (uint64_t) HAL_GetTick() / 1000;
 
 	if(secondsSinceStartup == 0) {
@@ -324,7 +324,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : ImpulseInput_Pin */
   GPIO_InitStruct.Pin = ImpulseInput_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN; // Change this! This was NOPULL
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN; // TODO: Change this! This was NOPULL
   HAL_GPIO_Init(ImpulseInput_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : ChangeUnit_Pin */

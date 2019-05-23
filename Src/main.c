@@ -132,8 +132,8 @@ int main(void)
 		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
 		break;
 	case UNIT_nSH:
-		dataToPrint = (counter * 1000) / 59;		// Use nS
-		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/h");
+		dataToPrint = ((double) (counter) / 59) / ((double) secondsSinceStartup) * 3600;		// Use nS
+		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "uS/h");
 		break;
 	default:
 		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,

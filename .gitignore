@@ -35,3 +35,4 @@
 .settings/*
 /Debug/
 *.elf.launch
+geigerone.elf.launch

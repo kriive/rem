@@ -34,3 +34,4 @@
 
 .settings/*
 /Debug/
+*.elf.launch

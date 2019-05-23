@@ -7,7 +7,9 @@
 
 #include "stm32f4xx_user_cb.h"
 extern uint8_t unitMeasure;
-uint64_t lastTick = 0;
+
+#define GEIGER_ANTIBUMP_TIME	20
+#define BUTTON_UNIT_TIME		50
 
 void toggleUnitMeasure()
 {
@@ -18,14 +20,28 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	switch(GPIO_Pin) {
 	case GEIGERIN: // Interrupt geiger input source pin
-		counter++;
+	{ // le graffe servono per definire lo scope della variabile locale lastTick
+		// static serve a mantenere il valore tra diverse chiamate alla funzione
+		static int lastTick = 0;
+		if(HAL_GetTick() >= (lastTick + GEIGER_ANTIBUMP_TIME)) { // antibump
+			lastTick = HAL_GetTick();
+			counter++;
+		}
 		break;
+	}
 	case GPIO_PIN_5:
-		if(HAL_GetTick() >= (lastTick + 50)) {
+	{
+		static uint64_t lastTick = 0;
+		// N.B. only first time lastTick is set to zero!
+		// Altre modifiche alla variabile vengono mantenute
+		// NON viene inizializzato tutte le volte a 0, grazie alla parolina static
+
+		if(HAL_GetTick() >= (lastTick + BUTTON_UNIT_TIME)) { // antibump
 			lastTick = HAL_GetTick();
 			toggleUnitMeasure();
 		}
 		break;
+	}
 	default:
 		return;
 	}

@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define	ROW_INIFITE_COUNTER	1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -107,28 +107,33 @@ int main(void)
   /* USER CODE BEGIN 2 */
   init_LCD();
   /* USER CODE END 2 */
-
+  uint64_t secondsSinceStartup = 1;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
 	PulisciSchermo();
-	uint64_t dataToPrint = 0;
+	double dataToPrint = 0;
 
 	/*
 	 * Prima scriviamo la stringa legata all'unità di misura
 	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
 	 */
+	secondsSinceStartup = (uint64_t) HAL_GetTick() / 1000;
+
+	if(secondsSinceStartup == 0) {
+		secondsSinceStartup = 1;
+	}
 
 	switch(unitMeasure) {
 	case UNIT_CPM:
-		dataToPrint = counter;
-		StampaStringaSuLCD(0, getDigits(dataToPrint) + 1, "CPM");
+		dataToPrint = ((double) counter / (double) secondsSinceStartup) * 60;
+		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
 		break;
-	case UNIT_uSH:
-		dataToPrint = counter / 60;
-		StampaStringaSuLCD(0, getDigits(dataToPrint) + 1, "uS/h");
+	case UNIT_nSH:
+		dataToPrint = (counter * 1000) / 59;		// Use nS
+		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/h");
 		break;
 	default:
 		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,
@@ -137,10 +142,10 @@ int main(void)
 		break;
 	}
 
-	StampaInteroSuLCD(0, 0, dataToPrint);
+	StampaInteroSuLCD(ROW_INIFITE_COUNTER, 0, dataToPrint);
 
     /* USER CODE BEGIN 3 */
-	HAL_Delay(100);
+	HAL_Delay(200);		// TODO: Find correct time
   }
   /* USER CODE END 3 */
 }

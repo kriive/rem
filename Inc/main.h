@@ -56,7 +56,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 
 #define	UNIT_CPM	0
-#define UNIT_uSH	1
+#define UNIT_nSH	1
 
 /* USER CODE END EFP */
 

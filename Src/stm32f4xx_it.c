@@ -57,6 +57,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
+extern uint64_t potentiometerValue;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -217,11 +218,11 @@ void EXTI4_IRQHandler(void)
 void ADC_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC_IRQn 0 */
-
+  potentiometerValue = map(HAL_ADC_GetValue(&hadc1), 0, 4096, 0, 100);
   /* USER CODE END ADC_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC_IRQn 1 */
-
+  HAL_ADC_Start_IT(&hadc1);
   /* USER CODE END ADC_IRQn 1 */
 }
 

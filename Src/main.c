@@ -49,6 +49,8 @@ UART_HandleTypeDef huart2;
 uint64_t counter; // 64 bit should be enough
 
 uint8_t unitMeasure;
+
+uint64_t potentiometerValue;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -108,6 +110,8 @@ int main(void)
   init_LCD();
   /* USER CODE END 2 */
   uint64_t secondsSinceStartup = 1;
+
+  HAL_ADC_Start_IT(&hadc1);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -141,7 +145,7 @@ int main(void)
 													//	il debugger impazzisce
 		break;
 	}
-
+	StampaInteroSuLCD(0, 0, potentiometerValue);
 	StampaInteroSuLCD(ROW_INIFITE_COUNTER, 0, dataToPrint);
 
     /* USER CODE BEGIN 3 */
@@ -241,6 +245,10 @@ static void MX_ADC1_Init(void)
 
   /* USER CODE END ADC1_Init 2 */
 
+}
+
+long map(long x, long in_min, long in_max, long out_min, long out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 /**

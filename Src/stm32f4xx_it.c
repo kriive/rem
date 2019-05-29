@@ -58,6 +58,9 @@
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
 extern uint64_t potentiometerValue;
+extern uint64_t secondsCounter;
+extern uint64_t counterLimited;
+extern uint64_t cpmShortMeasure;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -183,11 +186,21 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
   /* USER CODE END SysTick_IRQn 0 */
+  static uint64_t lastTick = 1;
+  if (HAL_GetTick() >= (lastTick + (potentiometerValue * 1000))) {
+	  lastTick = HAL_GetTick(); // aggiorno timestamp ciclo
+
+	  cpmShortMeasure = (uint64_t) ((double) counterLimited / ((double) potentiometerValue / 60.0));
+	  counterLimited = 0;
+  }
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  /*
+   * se i tick correnti >= (i tick del ciclo scorso + base dei tempi [map])
+   *
+   * aggiorno variabile con valore da stampare
+   */
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -218,7 +231,7 @@ void EXTI4_IRQHandler(void)
 void ADC_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC_IRQn 0 */
-  potentiometerValue = HAL_ADC_GetValue(&hadc1); // map(, 0, 4096, 0, 100);
+  potentiometerValue =  map(HAL_ADC_GetValue(&hadc1), 0, 4096, 0, 100);
   /* USER CODE END ADC_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC_IRQn 1 */

@@ -33,7 +33,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define	ROW_INIFITE_COUNTER	1
+#define	ROW_INFINITE_COUNTER	1
+#define ROW_SHORT_COUNTER		0
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,11 +47,17 @@ ADC_HandleTypeDef hadc1;
 
 UART_HandleTypeDef huart2;
 
-uint64_t counter; // 64 bit should be enough
+uint64_t counter = 0; // 64 bit should be enough
 
-uint8_t unitMeasure;
+uint8_t unitMeasure = UNIT_CPM;
 
-uint64_t potentiometerValue;
+uint64_t potentiometerValue = 0;
+
+uint64_t secondsCounter = 1;
+
+uint64_t counterLimited = 0;
+
+uint64_t cpmShortMeasure = 0;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -60,8 +67,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
-//void DrawFirstRow(uint64_t*);
-void DrawSecondRow(uint64_t*);
+void DrawFirstRow(uint64_t);
+void DrawSecondRow(uint64_t);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -120,37 +127,61 @@ int main(void)
   {
 	PulisciSchermo();
 
-	/*
-	 * Prima scriviamo la stringa legata all'unità di misura
-	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
-	 */
-
 	secondsSinceStartup = (uint64_t) HAL_GetTick() / 1000;
 
 	if(secondsSinceStartup == 0) {
 		secondsSinceStartup = 1;
 	}
 
-	DrawSecondRow(&secondsSinceStartup);
+	DrawFirstRow(secondsSinceStartup);
+	DrawSecondRow(secondsSinceStartup);
 
     /* USER CODE BEGIN 3 */
-	HAL_Delay(200);		// TODO: Find correct time
+	HAL_Delay(100); // TODO: Find correct time
   }
   /* USER CODE END 3 */
 }
 
-void DrawSecondRow(uint64_t* secondsSinceStartup)
+void DrawFirstRow(uint64_t secondsSinceStartup)
 {
+	// double dataToPrint = 0;
+	//uint8_t mappedValue = map(potentiometerValue, 0, 4096, 0, 100);
+	uint8_t digits = getDigits(potentiometerValue);
+	uint64_t dataToShow = 0;
+
+	switch(unitMeasure) {
+	case UNIT_CPM:
+		// dataToPrint = 0;
+		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 4 - digits, "CPM~");
+		dataToShow = cpmShortMeasure;
+		break;
+	case UNIT_nSM:
+		// dataToPrint = 0;
+		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 5 - digits, "nS/m~"); // TODO: fix cast
+		dataToShow = (uint64_t) ((double) cpmShortMeasure / 3.54);
+		break;
+	}
+
+	StampaInteroSuLCD(ROW_SHORT_COUNTER, 0, dataToShow);
+	StampaInteroSuLCD(ROW_SHORT_COUNTER, N_COLONNE - digits, potentiometerValue);
+}
+
+void DrawSecondRow(uint64_t secondsSinceStartup)
+{
+	/*
+	 * Prima scriviamo la stringa legata all'unità di misura
+	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
+	 */
 	double dataToPrint = 0;
 
 	switch(unitMeasure) {
 	case UNIT_CPM:
-		dataToPrint = ((double) counter / (double) *secondsSinceStartup) * 60;
-		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
+		dataToPrint = ((double) counter / ((double) secondsSinceStartup / 60.0)); // contatore / (secondi / 60)
+		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
 		break;
-	case UNIT_nSH:
-		dataToPrint = ((double) (counter) / 59) / ((double) *secondsSinceStartup) * 3600;		// Use nS
-		StampaStringaSuLCD(ROW_INIFITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "uS/h");
+	case UNIT_nSM:
+		dataToPrint = (uint64_t) ((double) (counter) / ((double) secondsSinceStartup / 60.0) / 3.54);		// Use nS
+		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/m");
 		break;
 	default:
 		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,
@@ -158,8 +189,7 @@ void DrawSecondRow(uint64_t* secondsSinceStartup)
 													//	il debugger impazzisce
 		break;
 	}
-	StampaInteroSuLCD(0, 0, potentiometerValue);
-	StampaInteroSuLCD(ROW_INIFITE_COUNTER, 0, dataToPrint);
+	StampaInteroSuLCD(ROW_INFINITE_COUNTER, 0, dataToPrint);
 }
 
 /**

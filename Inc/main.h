@@ -56,7 +56,7 @@ long map(long x, long in_min, long in_max, long out_min, long out_max);
 /* USER CODE BEGIN EFP */
 
 #define	UNIT_CPM	0
-#define UNIT_nSH	1
+#define UNIT_nSM	1
 
 /* USER CODE END EFP */
 

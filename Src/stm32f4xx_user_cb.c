@@ -7,6 +7,7 @@
 
 #include "stm32f4xx_user_cb.h"
 extern uint8_t unitMeasure;
+extern uint64_t counterLimited;
 
 #define GEIGER_ANTIBUMP_TIME	20
 #define BUTTON_UNIT_TIME		50
@@ -26,6 +27,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(HAL_GetTick() >= (lastTick + GEIGER_ANTIBUMP_TIME)) { // antibump
 			lastTick = HAL_GetTick();
 			counter++;
+			counterLimited++;
 		}
 		break;
 	}

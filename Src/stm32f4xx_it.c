@@ -231,7 +231,7 @@ void EXTI4_IRQHandler(void)
 void ADC_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC_IRQn 0 */
-  potentiometerValue =  map(HAL_ADC_GetValue(&hadc1), 0, 4096, 0, 100);
+  potentiometerValue =  map(HAL_ADC_GetValue(&hadc1), 0, 4096, 1, 100);
   /* USER CODE END ADC_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);
   /* USER CODE BEGIN ADC_IRQn 1 */

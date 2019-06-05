@@ -10,7 +10,7 @@ extern uint8_t unitMeasure;
 extern uint64_t counterLimited;
 
 #define GEIGER_ANTIBUMP_TIME	20
-#define BUTTON_UNIT_TIME		50
+#define BUTTON_UNIT_TIME		200
 
 void toggleUnitMeasure()
 {

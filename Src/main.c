@@ -22,8 +22,7 @@
 #include "main.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "math.h"
-#include "assert.h"
+#include "lcddraw.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,8 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define	ROW_INFINITE_COUNTER	1
-#define ROW_SHORT_COUNTER		0
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -67,21 +65,13 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
-void DrawFirstRow(uint64_t);
-void DrawSecondRow(uint64_t);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int getDigits(uint32_t data)
-{
-	return (int) floor(log10(data)) + 1;	// floor arrotonda per difetto
-											// int tra parentesi è un cast
-											// serve a dire al compilatore di trattare il valore come intero
-											// e non come double (floor ritorna un double)
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -133,63 +123,13 @@ int main(void)
 		secondsSinceStartup = 1;
 	}
 
-	DrawFirstRow(secondsSinceStartup);
-	DrawSecondRow(secondsSinceStartup);
+	DrawFirstRow(secondsSinceStartup, potentiometerValue, cpmShortMeasure, unitMeasure);
+	DrawSecondRow(secondsSinceStartup, counter, unitMeasure);
 
     /* USER CODE BEGIN 3 */
 	HAL_Delay(100); // TODO: Find correct time
   }
   /* USER CODE END 3 */
-}
-
-void DrawFirstRow(uint64_t secondsSinceStartup)
-{
-	// double dataToPrint = 0;
-	//uint8_t mappedValue = map(potentiometerValue, 0, 4096, 0, 100);
-	uint8_t digits = getDigits(potentiometerValue);
-	uint64_t dataToShow = 0;
-
-	switch(unitMeasure) {
-	case UNIT_CPM:
-		// dataToPrint = 0;
-		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 4 - digits, "CPM~");
-		dataToShow = cpmShortMeasure;
-		break;
-	case UNIT_nSM:
-		// dataToPrint = 0;
-		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 5 - digits, "nS/m~"); // TODO: fix cast
-		dataToShow = (uint64_t) ((double) cpmShortMeasure / 3.54);
-		break;
-	}
-
-	StampaInteroSuLCD(ROW_SHORT_COUNTER, 0, dataToShow);
-	StampaInteroSuLCD(ROW_SHORT_COUNTER, N_COLONNE - digits, potentiometerValue);
-}
-
-void DrawSecondRow(uint64_t secondsSinceStartup)
-{
-	/*
-	 * Prima scriviamo la stringa legata all'unità di misura
-	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
-	 */
-	double dataToPrint = 0;
-
-	switch(unitMeasure) {
-	case UNIT_CPM:
-		dataToPrint = ((double) counter / ((double) secondsSinceStartup / 60.0)); // contatore / (secondi / 60)
-		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
-		break;
-	case UNIT_nSM:
-		dataToPrint = (uint64_t) ((double) (counter) / ((double) secondsSinceStartup / 60.0) / 3.54);		// Use nS
-		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/m");
-		break;
-	default:
-		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,
-													//	quando la variabile è fuori dai valori giusti
-													//	il debugger impazzisce
-		break;
-	}
-	StampaInteroSuLCD(ROW_INFINITE_COUNTER, 0, dataToPrint);
 }
 
 /**

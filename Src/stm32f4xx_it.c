@@ -58,7 +58,6 @@
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
 extern uint64_t potentiometerValue;
-extern uint64_t secondsCounter;
 extern uint64_t counterLimited;
 extern uint64_t cpmShortMeasure;
 /* USER CODE BEGIN EV */
@@ -103,7 +102,10 @@ void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
 
-  /* USER CODE END MemoryManagement_IRQn 0 */
+  /* USER CODE END MemoryManagement_IRQn 0 *//**
+   * @brief  This function is executed in case of error occurrence.
+   * @retval None
+   */
   while (1)
   {
     /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
@@ -213,6 +215,7 @@ void SysTick_Handler(void)
 
 /**
   * @brief This function handles EXTI line4 interrupt.
+  * Line 4 is connected to PB4, which handles geiger counter impulses
   */
 void EXTI4_IRQHandler(void)
 {

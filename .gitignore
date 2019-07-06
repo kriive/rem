@@ -32,7 +32,7 @@
 *.dSYM/
 *.su
 
-.settings/*
+#.settings/*
 /Debug/
-*.elf.launch
-geigerone.elf.launch
+#*.elf.launch
+#geigerone.elf.launch

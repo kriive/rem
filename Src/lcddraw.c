@@ -18,8 +18,6 @@ int getDigits(uint32_t data)
 											// e non come float (floorf ritorna un float)
 }
 
-// TODO: pass only precomputed values to while? Think about computational tradeoff
-
 void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, const uint64_t counter, const uint8_t unitMeasure)
 {
 	uint8_t digits = getDigits(potvalue);

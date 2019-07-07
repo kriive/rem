@@ -79,10 +79,9 @@ int main(void)
 	DrawFirstRow(secondsSinceStartup, potentiometerValue, cpmShortMeasure, unitMeasure);
 	DrawSecondRow(secondsSinceStartup, counter, unitMeasure);
 
-    /* USER CODE BEGIN 3 */
+
 	HAL_Delay(100);
   }
-  /* USER CODE END 3 */
 }
 
 // TODO: find a place for this lonely buddy

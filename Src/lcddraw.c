@@ -48,15 +48,15 @@ void DrawSecondRow(uint64_t secondsSinceStartup, uint64_t counter, uint8_t unitM
 	 * Prima scriviamo la stringa legata all'unità di misura
 	 * Calcoliamo il numero di cifre e poi scriviamo la stringa un carattere dopo
 	 */
-	float dataToPrint = 0;
+	uint16_t dataToPrint = 0;
 
 	switch(unitMeasure) {
 	case UNIT_CPM:
-		dataToPrint = ((float) counter / ((float) secondsSinceStartup / 60.0f)); // 60.0f tells compiler it's a float constant
+		dataToPrint = (uint16_t) ((float) counter / ((float) secondsSinceStartup / 60.0f)); // 60.0f tells compiler it's a float constant
 		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "CPM");
 		break;
 	case UNIT_nSM:
-		dataToPrint = (uint64_t) ((float) (counter) / ((float) secondsSinceStartup / 60.0f) / 3.54f);		// Use nS
+		dataToPrint = (uint16_t) ((float) (counter) / ((float) secondsSinceStartup / 60.0f) / 3.54f);		// Use nS
 		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/m");
 		break;
 	default:

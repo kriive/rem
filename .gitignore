@@ -36,4 +36,4 @@
 /Debug/
 #*.elf.launch
 #geigerone.elf.launch
-.settings/
+.settings/*

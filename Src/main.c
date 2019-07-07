@@ -26,7 +26,9 @@
 #include "core/SysClock.h"
 #include "core/ErrorHandler.h"
 
+#include "Display_LCD.h"
 #include "lcddraw.h"
+#include "utils.h"
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
@@ -88,11 +90,6 @@ int main(void)
 
 	HAL_Delay(100);
   }
-}
-
-// TODO: find a place for this lonely buddy
-long map(long x, long in_min, long in_max, long out_min, long out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 #ifdef  USE_FULL_ASSERT

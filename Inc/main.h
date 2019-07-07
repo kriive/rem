@@ -30,14 +30,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-#include "Display_LCD.h"
-
-/* Exported functions prototypes ---------------------------------------------*/
-long map(long x, long in_min, long in_max, long out_min, long out_max);
-/* USER CODE BEGIN EFP */
-
+// Defines
 #define	UNIT_CPM	0
 #define UNIT_nSM	1
 

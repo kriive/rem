@@ -22,6 +22,8 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 
+#include "utils.h"
+
 /* External variables --------------------------------------------------------*/
 extern ADC_HandleTypeDef hadc1;
 extern uint64_t potentiometerValue;

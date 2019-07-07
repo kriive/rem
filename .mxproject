@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=/home/kriive/Documents/Uni/Sistemi elettronici industriali/Project/geigerone/geigerone/Inc
+HeaderPath=/home/kriive/Documents/Uni/Sistemi elettronici industriali/Project/geigerone/rem/Inc
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=/home/kriive/Documents/Uni/Sistemi elettronici industriali/Project/geigerone/geigerone/Src
+SourcePath=/home/kriive/Documents/Uni/Sistemi elettronici industriali/Project/geigerone/rem/Src
 SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

@@ -32,7 +32,7 @@ void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, c
 		dataToShow = counter;
 		break;
 	case UNIT_nSM:
-		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 5 - digits, "nS/m~"); // TODO: fix cast
+		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 5 - digits, "nS/m~");
 		dataToShow = (uint64_t) ((float) counter / 3.54f); // f suffix clarifies that 3.54 is to be treated as float
 		break;
 	}

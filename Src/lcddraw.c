@@ -11,10 +11,11 @@
 
 int getDigits(uint32_t data)
 {
-	return (int) floor(log10(data)) + 1;	// floor arrotonda per difetto
+	// We used floorf and log10f to take advantage of FPU
+	return (int) floorf(log10f(data)) + 1;	// floorf arrotonda per difetto
 											// int tra parentesi è un cast
 											// serve a dire al compilatore di trattare il valore come intero
-											// e non come double (floor ritorna un double)
+											// e non come float (floorf ritorna un float)
 }
 
 // TODO: fix every double change to single procision
@@ -22,7 +23,6 @@ int getDigits(uint32_t data)
 
 void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, const uint64_t counter, const uint8_t unitMeasure)
 {
-	// double dataToPrint = 0;
 	//uint8_t mappedValue = map(potentiometerValue, 0, 4096, 0, 100);
 	uint8_t digits = getDigits(potvalue);
 	uint64_t dataToShow = 0;
@@ -36,7 +36,7 @@ void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, c
 	case UNIT_nSM:
 		// dataToPrint = 0;
 		StampaStringaSuLCD(ROW_SHORT_COUNTER, N_COLONNE - 5 - digits, "nS/m~"); // TODO: fix cast
-		dataToShow = (uint64_t) ((double) counter / 3.54);
+		dataToShow = (uint64_t) ((float) counter / 3.54);
 		break;
 	}
 

@@ -193,7 +193,7 @@ void SysTick_Handler(void)
   if (HAL_GetTick() >= (lastTick + (potentiometerValue * 1000))) {
 	  lastTick = HAL_GetTick(); // aggiorno timestamp ciclo
 
-	  cpmShortMeasure = (uint64_t) ((double) counterLimited / ((double) potentiometerValue / 60.0));
+	  cpmShortMeasure = (uint64_t) ((float) counterLimited / ((float) potentiometerValue / 60.0f)); // 60.0f tells compiler 60.0 is a float constant
 	  counterLimited = 0;
   }
   HAL_IncTick();

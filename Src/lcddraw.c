@@ -18,7 +18,6 @@ int getDigits(uint32_t data)
 											// e non come float (floorf ritorna un float)
 }
 
-// TODO: fix every double change to single procision
 // TODO: pass only precomputed values to while? Think about computational tradeoff
 
 void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, const uint64_t counter, const uint8_t unitMeasure)

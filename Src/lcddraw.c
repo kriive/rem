@@ -57,9 +57,10 @@ void DrawSecondRow(uint64_t secondsSinceStartup, uint64_t counter, uint8_t unitM
 		StampaStringaSuLCD(ROW_INFINITE_COUNTER, getDigits((uint64_t) dataToPrint) + 1, "nS/m");
 		break;
 	default:
-		assert(unitMeasure > 1 || unitMeasure < 0); //	Serve per debug,
-													//	quando la variabile è fuori dai valori giusti
-													//	il debugger impazzisce
+		/* This should be impossible!
+		 * Let's tip debugger something is wrong
+		 */
+		assert(unitMeasure == UNIT_CPM || unitMeasure == UNIT_nSM); // Trivial, but needed to emit a runtime error
 		break;
 	}
 	StampaInteroSuLCD(ROW_INFINITE_COUNTER, 0, dataToPrint);

@@ -192,7 +192,7 @@ void EXTI4_IRQHandler(void)
   */
 void ADC_IRQHandler(void)
 {
-  potentiometerValue =  map(HAL_ADC_GetValue(&hadc1), 0, 4096, 1, 100);
+  potentiometerValue =  100 - map(HAL_ADC_GetValue(&hadc1), 0, 4096, 1, 100);
   HAL_ADC_IRQHandler(&hadc1);
   HAL_ADC_Start_IT(&hadc1); // Once finished, start a new conversion
 }

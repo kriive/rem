@@ -20,14 +20,20 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
+// Includes from HAL (see main.h)
 #include "core/IODevices.h"
 #include "core/SysClock.h"
+#include "core/ErrorHandler.h"
+
 #include "lcddraw.h"
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 
 UART_HandleTypeDef huart2;
+
+/* Export variables */
 
 uint64_t counter = 0; // 64 bit should be enough
 

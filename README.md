@@ -1,17 +1,19 @@
-# Analog to digital Geiger counter Converter 
-## Pin utilizzati dai connettori
-### Schermo LCD
-PC8, PC6, PC5, PA12, PA11, PB12 usati direttamente dal display.
-Non sono possibili connessioni su PD8, PB11/PE9 per questioni meccaniche.
+# REM (Radiation Exposure Monitor)
+REM is a digital wrapper around SV500 german geiger counter.
+It was developed as a final assignment for SEI class in Università di Parma.
 
-### Ingresso impulsi interrupt
+It features a LCD display, a pushbutton to change unit measures and a potentiometer. And of course a geiger counter.
+
+## Pins and connections
+### LCD display
+PC8, PC6, PC5, PA12, PA11, PB12 used by display.
+Can't use PD8, PB11/PE9 for mechanical reasons.
+
+### I/O input impluse
 PB4 -> D5.
 
-### Ingresso pulsante
+### I/O input pushbutton
 PB5 -> D4.
 
-### Ingresso potenziometro
+### I/O input potentiometer
 PA1 -> A1.
-
-### Output leddino
-PA10 -> D2.

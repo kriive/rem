@@ -14,5 +14,6 @@ extern uint64_t counter;
 #define GEIGERIN 	GPIO_PIN_4
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void toggleUnitMeasure(void);
 
 #endif /* STM32F4XX_USER_CB_H_ */

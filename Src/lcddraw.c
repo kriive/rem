@@ -39,7 +39,7 @@ void DrawFirstRow(const uint64_t secondsSinceStartup, const uint64_t potvalue, c
 	StampaInteroSuLCD(ROW_SHORT_COUNTER, N_COLONNE - digits, potvalue);
 }
 
-void DrawSecondRow(uint64_t secondsSinceStartup, uint64_t counter, uint8_t unitMeasure)
+void DrawSecondRow(const uint64_t secondsSinceStartup, const uint64_t counter, const uint8_t unitMeasure)
 {
 	/*
 	 * Prima scriviamo la stringa legata all'unità di misura
